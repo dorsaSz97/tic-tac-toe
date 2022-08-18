@@ -1,0 +1,314 @@
+@use 'abstracts' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+@mixin hide {
+  &.hide {
+    animation: hide 0.6s forwards;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+  // overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+/* make form elements easier to work with */
+input,
+button,
+textarea,
+select {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  font: inherit;
+  color: inherit;
+}
+/* remove animations for people who've turned them off */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ////////////////////////////
+
+$color-o: rgb(158, 212, 162);
+$color-x: rgb(196, 82, 85);
+$color-white: #fff;
+$color-text: #edeef0;
+$color-bg: #333542;
+
+body {
+  background-color: $color-bg;
+  color: $color-text;
+}
+:root {
+  --cell-size: 100px;
+  --mark-size: calc(var(--cell-size) * 0.9);
+}
+
+.game-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(170);
+  width: 100%;
+  height: 100vh;
+
+  .board {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 200px);
+  }
+
+  .score-container {
+    p {
+      font-weight: 600;
+      font-size: 35px;
+    }
+    width: 150px;
+    height: 150px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    .score {
+      font-size: 47px;
+    }
+  }
+}
+
+.cell {
+  width: rem(200);
+  height: rem(200);
+  border: 1px dashed rgba($color-text, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.cell:last-child,
+.cell:nth-child(8),
+.cell:nth-child(7) {
+  border-bottom: none;
+}
+
+.cell.x,
+.cell.o {
+  cursor: not-allowed;
+  position: relative;
+}
+
+.cell.x {
+  background-image: url('tic-x.svg');
+}
+.cell.o {
+  background-image: url('tic-o.svg');
+}
+
+.board.x .cell:not(.x):not(.o)::before,
+.board.o .cell:not(.x):not(.o)::before {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  inset: 0;
+  transition: all 0.3s;
+}
+.board.x .cell:not(.x):not(.o)::before {
+  background-image: url('tic-x.svg');
+}
+.board.o .cell:not(.x):not(.o)::before {
+  background-image: url('tic-o.svg');
+}
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::before {
+  opacity: 0.1;
+}
+
+// .cell.x::before,
+// .cell.x::after,
+// .board.x .cell:not(.x):not(.o):hover::before,
+// .board.x .cell:not(.x):not(.o):hover::after {
+//   content: '';
+//   position: absolute;
+//   width: calc(var(--mark-size) * 0.15);
+//   height: var(--mark-size);
+// }
+
+// .cell.x::before,
+// .board.x .cell:not(.x):not(.o):hover::before {
+//   transform: rotate(45deg);
+// }
+
+// .cell.x::after,
+// .board.x .cell:not(.x):not(.o):hover::after {
+//   transform: rotate(-45deg);
+// }
+
+.start-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: $color-bg;
+
+  .message {
+    margin-bottom: rem(80);
+    text-transform: uppercase;
+    font-size: rem(25);
+    color: $color-text;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .marks {
+    .mark {
+      width: rem(200);
+      height: rem(200);
+      cursor: pointer;
+      animation: shakeMarks 0.8s linear infinite;
+      &:not(:last-child) {
+        margin-right: rem(150);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .reminder {
+    margin-top: rem(50);
+    font-size: rem(15);
+    color: rgba($color-text, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  @include hide;
+}
+
+@keyframes hide {
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes shakeMarks {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(25deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-25deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.end-section {
+  display: none;
+  position: absolute;
+  inset: 0;
+  height: 60%;
+  margin-block: auto;
+  background-color: rgba(#21232a, 1);
+  display: flex;
+  // gap: rem(30);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .message {
+    margin-bottom: rem(40);
+    font-size: rem(60);
+    text-transform: uppercase;
+  }
+  button {
+    cursor: pointer;
+    // border: 1px solid #c45255;
+    color: $color-o;
+    background-color: #333542;
+    font-size: rem(20);
+    transition: all 0.2s;
+
+    // box-shadow: 0 0 20px rgba(255, 255, 255, 0.266);
+    padding: rem(20) rem(25);
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #4a4d5f;
+    }
+  }
+}

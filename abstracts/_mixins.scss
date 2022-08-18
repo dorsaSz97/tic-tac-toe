@@ -1,0 +1,30 @@
+// Breakpoints
+
+// 700px, 1100px, 1400px
+$breakpoints-up: (
+  'medium': '43.75em',
+  'large': '68.75em',
+  'xlarge': '87.5em',
+);
+// 699px, 1099px, 1399px
+$breakpoints-down: (
+  'small': '43.68em',
+  'medium': '68.68em',
+  'large': '87.4375em',
+);
+
+// Mobile first
+@mixin breakpoint-up($size) {
+  @media (min-width: map-get($breakpoints-up, $size)) {
+    @content;
+  }
+}
+// Desktop first
+@mixin breakpoint-down($size) {
+  @media (max-width: map-get($breakpoints-down, $size)) {
+    @content;
+  }
+}
+
+// Gets the value of the passed in size from the specified map, so we can set some css rules to it
+// @include breakpoint-up(large) {}
