@@ -4,7 +4,7 @@ This is the famous Tic Tac Toe game, coded with JavaScript using minmax algorith
 
 ## Screenshots
 
-<img src="src/images/sc.png" width="100%" height="100%"/>
+<img src="images/sc.png" width="100%" height="100%"/>
 
 ## Built with
 
